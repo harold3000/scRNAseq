@@ -1,0 +1,60 @@
+#Transfer files from Win10 to subsystem ubuntu ###########################
+
+cd /mnt/c/Users/peiy/Desktop/GSE126321_RAW.tar /home/yonggang/singlecell/gm12878/
+
+#Move Windows10 subsystem for Ubuntu to another driver (D:)###########################
+#https://windows-hexerror.linestarve.com/q/so38779801-Move-WSL-Bash-on-Windows-root-filesystem-to-another-hard-drive
+#Setp1_Set permissions to the target folder
+whoami
+icacls D:\Ubuntu /grant "peiy:(OI)(CI)(F)"
+
+#Step2_Move the distribution
+C:\Users\peiy\Desktop\lxrunoffline\LxRunOffline.exe get-dir -n Ubuntu
+cd C:\Users\peiy\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc
+C:\Users\peiy\Desktop\lxrunoffline\LxRunOffline.exe move -n Ubuntu -d D:\Ubuntu
+
+#Step3_Run the distribution
+C:\Users\peiy\Desktop\lxrunoffline\LxRunOffline.exe run -n Ubuntu -w
+exit
+
+
+#Install a software from Github in Ubuntu using terminal
+#https://www.quora.com/How-do-I-install-a-software-from-Github-in-Ubuntu-using-terminal
+# install the git command
+sudo apt-get install git
+
+#clone this repository in the current directory
+git clone https://github.com/KlugerLab/FIt-SNE
+
+###################################################################################
+#SRA Toolkit Installation and Configuration
+export PATH=/home/yonggang/singlecell/sra/sratoolkit.2.9.6-1-centos_linux64/bin:$PATH
+echo 'export PATH="/home/yonggang/singlecell/sra/sratoolkit.2.9.6-1-centos_linux64/bin":$PATH' >> ~/.bashrc
+source ~/.bashrc
+
+######################################################################################################
+#Analyze scRNA-seq from GM12878 cells (SRR8551677)
+#Fastqc
+/home/yonggang/singlecell/fastqc/Fastqc/fastqc SRR8551677.fastq &
+
+#Convert SRA to fastq
+cd /home/yonggang/singlecell/gm12878
+time /home/yonggang/singlecell/sra/sratoolkit.2.9.6-1-centos_linux64/bin/fastq-dump --gzip --split-files -A SRR8551677.sra
+
+#Rename the files for cellranger
+mv SRR8551677.sra_1.fastq.gz SRR8551677_S1_L001_R1_001.fastq.gz
+mv SRR8551677.sra_2.fastq.gz SRR8551677_S1_L001_R2_001.fastq.gz
+
+#Cell Ranger mkfastq
+cellranger mkfastq --id=SRR8551677 --run=/home/yonggang/singlecell/gm12878 --csv=/home/yonggang/singlecell/gm12878/GSM3596321_GM12878_barcodes.csv
+
+#Running cellranger count
+cellranger count --id=SRR8551677 --fastqs=fastq --sample=SRR8551677 --transcriptome=/home/yonggang/singlecell/cellranger/refdata-cellranger-GRCh38-3.0.0
+
+#Running cellranger aggr
+# The cellranger aggr pipeline is used to aggregate, or combine two cellranger count runs together.
+
+#Running cellranger reanalyze
+The cellranger reanalyze pipeline allows to rerun the secondary analysis for a completed cellranger count or aggr run with different parameters.
+
+##

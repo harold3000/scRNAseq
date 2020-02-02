@@ -1,0 +1,44 @@
+#bcl2fastq2 install in ubuntu 18 of win10
+#https://sarahpenir.github.io/linux/Installing-bcl2fastq/
+
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install zlibc
+sudo apt-get install libc6 ## installs librt and libpthread
+sudo apt-get install gcc
+sudo apt-get install g++
+
+sudo apt-get -y --purge remove libboost1.62-all-dev libboost1.62-dev ## the version I had at that time
+sudo apt-get remove cmake
+
+sudo mkdir -p /usr/include/sys
+sudo ln -s /usr/include/x86_64-linux-gnu/sys/stat.h /usr/include/sys/stat.h
+
+mkdir /home/yonggang/singlecell/cellranger/bcl2fastq2/bcl2fastq-build
+cd bcl2fastq-build
+/home/yonggang/singlecell/cellranger/bcl2fastq2/bcl2fastq/src/configure && make && sudo make install
+
+###
+#Installing Cell Ranger
+export PATH=/home/yonggang/singlecell/cellranger/cellranger-3.1.0:$PATH
+echo 'export PATH="/home/yonggang/singlecell/cellranger/cellranger-3.1.0/cellranger":$PATH' >> ~/.bashrc
+source ~/.bashrc
+
+#Cell Ranger mkfastq
+cellranger mkfastq --id=tutorial_walk_through \
+--run=/home/yonggang/singlecell/cellranger/run_cellranger_mkfastq/cellranger-tiny-bcl-1.2.0 \
+--csv=/home/yonggang/singlecell/cellranger/run_cellranger_mkfastq/cellranger-tiny-bcl-simple-1.2.0.csv
+
+#Running cellranger count
+cellranger count --id=run_count_1kpbmcs \
+--fastqs=/home/yonggang/singlecell/cellranger/run_cellranger_count/pbmc_1k_v3_fastqs \
+--sample=pbmc_1k_v3 \
+--transcriptome=/home/yonggang/singlecell/cellranger/refdata-cellranger-GRCh38-3.0.0
+
+#Running cellranger aggr (optional)
+# The cellranger aggr pipeline is used to aggregate, or combine two cellranger count runs together.
+
+#Running cellranger reanalyze (optional)
+The cellranger reanalyze pipeline allows to rerun the secondary analysis for a completed cellranger count or aggr run with different parameters.
+
+###
