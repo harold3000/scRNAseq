@@ -2,7 +2,7 @@
 
 cd /mnt/c/Users/peiy/Desktop/GSE126321_RAW.tar /home/yonggang/singlecell/gm12878/
 
-#Move Windows10 subsystem for Ubuntu to another driver (D:)###########################
+#Move Windows10 subsystem for Ubuntu to another driver (D:)
 #https://windows-hexerror.linestarve.com/q/so38779801-Move-WSL-Bash-on-Windows-root-filesystem-to-another-hard-drive
 #Setp1_Set permissions to the target folder
 whoami
@@ -16,7 +16,6 @@ C:\Users\peiy\Desktop\lxrunoffline\LxRunOffline.exe move -n Ubuntu -d D:\Ubuntu
 #Step3_Run the distribution
 C:\Users\peiy\Desktop\lxrunoffline\LxRunOffline.exe run -n Ubuntu -w
 exit
-
 
 #Install a software from Github in Ubuntu using terminal
 #https://www.quora.com/How-do-I-install-a-software-from-Github-in-Ubuntu-using-terminal
