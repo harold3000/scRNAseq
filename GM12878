@@ -26,13 +26,11 @@ sudo apt-get install git
 #clone this repository in the current directory
 git clone https://github.com/KlugerLab/FIt-SNE
 
-###################################################################################
 #SRA Toolkit Installation and Configuration
 export PATH=/home/yonggang/singlecell/sra/sratoolkit.2.9.6-1-centos_linux64/bin:$PATH
 echo 'export PATH="/home/yonggang/singlecell/sra/sratoolkit.2.9.6-1-centos_linux64/bin":$PATH' >> ~/.bashrc
 source ~/.bashrc
 
-######################################################################################################
 #Analyze scRNA-seq from GM12878 cells (SRR8551677)
 #Fastqc
 /home/yonggang/singlecell/fastqc/Fastqc/fastqc SRR8551677.fastq &
