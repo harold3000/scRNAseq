@@ -1,5 +1,4 @@
-#Transfer files from Win10 to subsystem ubuntu ###########################
-
+#Transfer files from Win10 to subsystem ubuntu
 cd /mnt/c/Users/peiy/Desktop/GSE126321_RAW.tar /home/yonggang/singlecell/gm12878/
 
 #Move Windows10 subsystem for Ubuntu to another driver (D:)
